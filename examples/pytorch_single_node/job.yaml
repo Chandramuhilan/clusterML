@@ -1,0 +1,21 @@
+apiVersion: clusterml/v1
+kind: Job
+metadata:
+  name: mnist-single-gpu
+  labels:
+    framework: pytorch
+    dataset: mnist
+
+spec:
+  image: pytorch/pytorch:2.0-cuda11.8
+  command: ["python", "train.py"]
+  args: ["--epochs", "10", "--batch-size", "64"]
+  resources:
+    cpu: "4"
+    memory: "8Gi"
+    gpu: 1
+  env:
+    - name: PYTHONUNBUFFERED
+      value: "1"
+    - name: WANDB_MODE
+      value: "disabled"

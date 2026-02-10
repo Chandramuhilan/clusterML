@@ -1,0 +1,24 @@
+apiVersion: clusterml/v1
+kind: Job
+metadata:
+  name: distributed-resnet
+  labels:
+    framework: pytorch
+    type: distributed
+
+spec:
+  image: pytorch/pytorch:2.0-cuda11.8
+  command: ["torchrun", "--nproc_per_node=2", "train_distributed.py"]
+  args: ["--epochs", "20", "--batch-size", "128"]
+  resources:
+    cpu: "8"
+    memory: "32Gi"
+    gpu: 2
+  distributed:
+    workers: 4
+    type: pytorch
+  env:
+    - name: NCCL_DEBUG
+      value: "INFO"
+    - name: PYTHONUNBUFFERED
+      value: "1"

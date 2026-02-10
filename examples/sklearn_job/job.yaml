@@ -1,0 +1,19 @@
+apiVersion: clusterml/v1
+kind: Job
+metadata:
+  name: sklearn-classification
+  labels:
+    framework: sklearn
+    type: cpu-only
+
+spec:
+  image: python:3.10-slim
+  command: ["python", "classify.py"]
+  args: ["--n-estimators", "100"]
+  resources:
+    cpu: "2"
+    memory: "4Gi"
+    gpu: 0
+  env:
+    - name: PYTHONUNBUFFERED
+      value: "1"
